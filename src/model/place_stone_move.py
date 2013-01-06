@@ -1,0 +1,2 @@
+class PlaceStoneMove(Move):
+  pass
