@@ -1,6 +1,8 @@
+# coding=utf-8
+
 class BoardModel(object):
 
-    TOKENS = ['empty', 'white', 'black']
+    TOKENS = ["empty", "white", "black"]
 
     def __init__(self, size):
         self._size = size
@@ -21,15 +23,8 @@ class BoardModel(object):
         return self._M[row][column]
 
     def __unicode__(self):
-        return u'\n'.join([' '.join([f[0] for f in row]) for row in self._M])
+        return u"\n".join([" ".join([f[0] for f in row]) for row in self._M])
 
     def __str__(self):
-        return unicode(self).encode('utf-8')
+        return unicode(self).encode("utf-8")
 
-def test():
-    b = BoardModel(3)
-    b.set_token(0, 0, "white")
-    b.set_token(2, 2, "black")
-    assert b.get_token(0, 0) == "white"
-    assert b.get_token(1, 1) == "empty"
-    assert b.get_token(2, 2) == "black"
