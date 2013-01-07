@@ -6,6 +6,8 @@ import cairo
 
 from model.board_model import BoardModel
 from view.board_view import BoardView
+from model.player import Player
+from model.game import Game
 
 class MainWindow(gtk.Window):
 
@@ -23,6 +25,11 @@ class MainWindow(gtk.Window):
 
         self.add(view)
         self.show_all()
+
+	player1 = Player()
+	player2 = Player()
+	game = Game(player1, player2)
+	game.start()
 
 if __name__ == "__main__":
     MainWindow()
