@@ -13,7 +13,7 @@ class MainWindow(gtk.Window):
 
     def __init__(self):
         super(MainWindow, self).__init__()
-        
+
         self.set_title("Go")
         self.set_size_request(400, 300)
         self.set_position(gtk.WIN_POS_CENTER)
@@ -26,10 +26,11 @@ class MainWindow(gtk.Window):
         self.add(view)
         self.show_all()
 
-	player1 = Player()
-	player2 = Player()
-	game = Game(player1, player2)
-	game.start()
+        # TODO: use Game model for view, incorporate Board into Game.
+        player1 = Player()
+        player2 = Player()
+        game = Game(player1, player2)
+        game.start()
 
 if __name__ == "__main__":
     MainWindow()
