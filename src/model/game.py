@@ -6,7 +6,7 @@ class Game(object):
         self._player2 = player2
         self._history = GameHistory()
 
-    def get_history():
+    def get_history(self):
         return self._history
 
     def make_move(self, move):
