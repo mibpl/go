@@ -2,11 +2,11 @@
 
 class BoardModel(object):
 
-    TOKENS = ["empty", "white", "black"]
+    TOKENS = ['empty', 'white', 'black']
 
     def __init__(self, size):
         self._size = size
-        self._M = [["empty" for i in range(0, size)] for j in range(0, size)]
+        self._M = [['empty' for i in range(0, size)] for j in range(0, size)]
 
     def get_size(self):
         return self._size
