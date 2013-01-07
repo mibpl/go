@@ -4,6 +4,7 @@
 import gtk
 import cairo
 
+from controller.controller import Controller
 from model.board_model import BoardModel
 from view.board_view import BoardView
 from model.player import Player
@@ -19,18 +20,15 @@ class MainWindow(gtk.Window):
         self.set_position(gtk.WIN_POS_CENTER)
         self.connect("destroy", gtk.main_quit)
 
-        model = BoardModel(19)
         view = BoardView(self)
-        view.board = model
+        controller = Controller()
+        
+        view.set_controller(controller)
+        controller.set_view(view)
 
         self.add(view)
         self.show_all()
 
-        # TODO: use Game model for view, incorporate Board into Game.
-        player1 = Player()
-        player2 = Player()
-        game = Game(player1, player2)
-        game.start()
 
 if __name__ == "__main__":
     MainWindow()

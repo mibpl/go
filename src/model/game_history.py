@@ -1,3 +1,5 @@
+from game_state import GameState
+
 class GameHistory(object):
     def __init__(self):
         self._moves = []
@@ -8,7 +10,7 @@ class GameHistory(object):
         """
         cur_state = self.get_state_after_move(self.get_num_moves())
         if move.validate(cur_state):
-            _moves.append(move)
+            self._moves.append(move)
             return True
         else:
             return False
