@@ -19,6 +19,11 @@ class TestGameHistory(unittest.TestCase):
         g = h.get_state_after_move(3)
         b = g.board
         self.assertEqual(board_text, unicode(b))
+        
+        g = h.get_state_after_move(3)
+        b = g.board
+        self.assertEqual(board_text, unicode(b))
+        
         self.assertFalse(m[-1].validate(g))
 
 
