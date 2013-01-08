@@ -7,8 +7,6 @@ import cairo
 from controller.controller import Controller
 from model.board_model import BoardModel
 from view.board_view import BoardView
-from model.player import Player
-from model.game import Game
 
 class MainWindow(gtk.Window):
 
