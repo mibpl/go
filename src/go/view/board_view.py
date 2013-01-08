@@ -26,7 +26,6 @@ class BoardView():
         main_hbox.pack_start(self._image, True)
         main_hbox.pack_start(right_panel, False)
         
-        
         status_bar = gtk.Statusbar()
         status_bar.push(1, "Welcome to go")
         
@@ -37,10 +36,8 @@ class BoardView():
         
         self._image.add_events(gtk.gdk.EXPOSURE_MASK)
         self._image.connect("expose-event", self.expose)
-        
-        b1.add_events(gtk.gdk.BUTTON_PRESS_MASK)
-        b1.connect("button-press-event", self.mousePress)
-        #self.connect("button-press-event", self.mousePress)
+        self._image.add_events(gtk.gdk.BUTTON_PRESS_MASK)
+        self._image.connect("button-press-event", self.boardMousePress)
         self._game_state = None
         self._controller = None
 
@@ -55,16 +52,16 @@ class BoardView():
 
     def display_message(self, message):
         pass
+    
+    def _get_size(self):
+        return min(self._image.allocation.width, self._image.allocation.height)
+    
 
-    def mousePress(self, widget, event):
-        print("test")
-      
+    def boardMousePress(self, widget, event):
         if self._game_state is None:
             return
 
-        width = self.allocation.width
-        height = self.allocation.height
-        size = min(width, height)
+        size = self._get_size()
         n = self._game_state.board.get_size()
         column = int(math.floor(event.x / size * n))
         row = int(math.floor(event.y / size * n))
@@ -76,32 +73,46 @@ class BoardView():
     def expose(self, widget, event):
         if self._game_state is None:
            return        
-
+        
+        size = self._get_size()
+        board = self._game_state.board
+        n = board.get_size()
+        rect_size = size / float(n)
+        
         cr = widget.window.cairo_create()
-
-        width = widget.allocation.width
-        height = widget.allocation.height
-
-        size = min(width, height)
-
         cr.set_source_rgb(0.95, 0.8, 0.5)
         cr.rectangle(0, 0, size, size)
         cr.fill()
 
         cr.set_source_rgb(0.1, 0.1, 0.1)
-
-        board = self._game_state.board
-        n = board.get_size()
+        cr.set_line_width(rect_size / 20)
+        
+        
         for i in range(n):
             x = ((2 * i + 1) * size) / (2 * n)
-            cr.move_to(0, x)
-            cr.line_to(size, x)
+            cr.move_to(rect_size / 2, x)
+            cr.line_to(size - rect_size / 2, x)
             cr.stroke()
-            cr.move_to(x, 0)
-            cr.line_to(x, size)
+            cr.move_to(x, rect_size / 2)
+            cr.line_to(x, size - rect_size / 2)
             cr.stroke()
+        
+        if n == 19:
+            r = 0.2 * rect_size
+            for i in range(3):
+                for j in range(3):
+                    cr.arc(
+                        rect_size / 2 + 3 * rect_size + i * 6 * rect_size,
+                        rect_size / 2 + 3 * rect_size + j * 6 * rect_size,
+                        r,
+                        0.0,
+                        2 * math.pi
+                    )
+                    cr.fill()
+               
+        
 
-        r = 0.5 * size / n
+        r = 0.5 * rect_size
         for row in range(n):
             for column in range(n):
                 token = board.get_token(row, column)
