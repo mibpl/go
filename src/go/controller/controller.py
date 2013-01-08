@@ -24,7 +24,7 @@ class Controller(object):
 
     def click(self, row, column):
         if not self._is_current():
-            pass
+            return
         state = self._get_current_state()
         player = state.active_player
         move = PlaceStoneMove(row, column, player)
@@ -32,18 +32,18 @@ class Controller(object):
 
     def do_pass(self):
         if not self._is_current():
-            pass
+            return
         move = PassMove()
         self._execute_move(move)
 
     def navigate_prev(self):
         if self._is_start():
-            pass
+            return
         self._current_time -= 1
 
     def navigate_next(self):
         if self._is_current():
-            pass
+            return
         self._current_time += 1
 
     def _get_current_state(self):
