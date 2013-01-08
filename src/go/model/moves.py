@@ -1,3 +1,4 @@
+# coding=utf-8
 from game_state import GameState
 
 def advance_turn(gs):
@@ -20,14 +21,13 @@ class PlaceStoneMove(object):
 
 
 class PassMove(object):
-    def __init__(self, token):
-        self._token = token
 
     def __call__(self, gs):
+        gs.consecutive_passes += 1
         return advance_turn(gs)
-    
+
     def validate(self, gs):
-        return True
+        return gs.consecutive_passes < 2
 
 
 class ClaimStoneDeadMove(object):
