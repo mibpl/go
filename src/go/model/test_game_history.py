@@ -8,7 +8,7 @@ import moves
 class TestGameHistory(unittest.TestCase):
     def test1(self):
         h = GameHistory(GameState(BoardModel(3)))
-        m = [moves.PassMove(), moves.PlaceStoneMove(0, 0, 'white'), moves.PlaceStoneMove(2, 1, 'black')]
+        m = [moves.PassMove(), moves.PlaceStoneMove(0, 0), moves.PlaceStoneMove(2, 1)]
         for x in m:
             h.append_move(x)
         board_text = (

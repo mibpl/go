@@ -5,18 +5,20 @@ def advance_turn(gs):
     gs.active_player, gs.second_player = gs.second_player, gs.active_player
     return gs
 
+def stone_placing_stage(gs):
+    return gs.stage == 'stone placing'
+
 
 class PlaceStoneMove(object):
-    def __init__(self, row, column, token):
+    def __init__(self, row, column):
         self._row = row
         self._column = column
-        self._token = token
 
     def validate(self, gs):
-        return gs.board.get_token(self._row, self._column) == 'empty' and gs.active_player == self._token
+        return gs.board.get_token(self._row, self._column) == 'empty'
 
     def __call__(self, gs):
-        gs.board.set_token(self._row, self._column, self._token)
+        gs.board.set_token(self._row, self._column, gs.active_player)
         return advance_turn(gs)
 
 
@@ -27,7 +29,7 @@ class PassMove(object):
         return advance_turn(gs)
 
     def validate(self, gs):
-        return gs.consecutive_passes < 2
+        return stone_placing_stage(gs) and gs.consecutive_passes < 2
 
 
 class ClaimStoneDeadMove(object):
@@ -36,7 +38,7 @@ class ClaimStoneDeadMove(object):
         self._row = row
         self._column = column
 
-    def __cal__(self, gs):
+    def __call__(self, gs):
         pass
 
     def validate(self, gs):

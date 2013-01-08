@@ -26,8 +26,7 @@ class Controller(object):
         if not self._is_current():
             return
         state = self._get_current_state()
-        player = state.active_player
-        move = PlaceStoneMove(row, column, player)
+        move = PlaceStoneMove(row, column)
         self._execute_move(move)
 
     def do_pass(self):

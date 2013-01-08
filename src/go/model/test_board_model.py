@@ -27,5 +27,15 @@ class TestBoardModel(unittest.TestCase):
         self.assertEqual(board_text, unicode(board))
         self.assertEqual(board_text, str(board))
 
+    def test_board_from_string(self):
+        board_string = (
+                "w e e\n"
+                "e e e\n"
+                "e b e")
+        board = BoardModel.from_string(board_string)
+        self.assertEqual(board_string, str(board))
+
+
+
 if __name__ == '__main__':
     unittest.main()
