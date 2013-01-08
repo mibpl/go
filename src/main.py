@@ -7,6 +7,7 @@ import cairo
 from controller.controller import Controller
 from model.board_model import BoardModel
 from view.board_view import BoardView
+from model.game_history import GameHistory
 
 class MainWindow(gtk.Window):
 
@@ -19,7 +20,8 @@ class MainWindow(gtk.Window):
         self.connect("destroy", gtk.main_quit)
 
         view = BoardView(self)
-        controller = Controller()
+        game_history = GameHistory()
+        controller = Controller(game_history)
         
         view.set_controller(controller)
         controller.set_view(view)
