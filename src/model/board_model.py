@@ -1,4 +1,5 @@
 # coding=utf-8
+from copy import deepcopy
 
 class BoardModel(object):
 
@@ -27,4 +28,3 @@ class BoardModel(object):
 
     def __str__(self):
         return unicode(self).encode("utf-8")
-

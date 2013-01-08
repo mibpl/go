@@ -1,27 +1,21 @@
+from copy import deepcopy
 from game_state import GameState
 
 class GameHistory(object):
-    def __init__(self):
+    def __init__(self, initial_state=GameState()):
         self._moves = []
+        self._initial_state = deepcopy(initial_state)
 
     def append_move(self, move):
-        """
-        Appends move if it is valid. Returns True on success.
-        """
-        cur_state = self.get_state_after_move(self.get_num_moves())
-        if move.validate(cur_state):
-            self._moves.append(move)
-            return True
-        else:
-            return False
+        assert move.validate(self.get_state_after_move(self.get_num_moves()))
+        self._moves.append(move)
 
     def get_num_moves(self):
         return len(self._moves)
 
     def get_state_after_move(self, move_id):
         assert 0 <= move_id and move_id <= len(self._moves)
-        state = GameState() #TODO: how to initialize game state?
+        state = deepcopy(self._initial_state)
         for move in self._moves[:move_id]:
-            move.make(state)
+            state = move(state)
         return state
-

@@ -1,2 +1,0 @@
-class PassMove(Move):
-  pass

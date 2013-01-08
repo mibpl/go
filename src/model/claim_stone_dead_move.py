@@ -1,2 +1,0 @@
-class ClaimStoneDeadMove(Move):
-  pass
