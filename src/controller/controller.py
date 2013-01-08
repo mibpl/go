@@ -30,9 +30,6 @@ class Controller(object):
 
     def _get_current_state(self):
         return self._history.get_state_after_move(self._time)
-        
-    def _get_current_state(self):
-        return self._history.get_state_after_move(self._time)
 
     def _update_view(self):
         if self._view is not None:
