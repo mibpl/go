@@ -19,8 +19,20 @@ class Controller(object):
         self._time += 1
         self._update_view()
 
+    def do_pass(self):
+        pass
+
+    def navigate_prev(self):
+        pass
+
+    def navigate_next(self):
+        pass
+
+    def _get_current_state(self):
+        return self._history.get_state_after_move(self._time)
+        
     def _update_view(self):
         if self._view is not None:
-            state = self._history.get_state_after_move(self._time)
-            self._view.set_board(state.board)
+            game_state = self._get_current_state()
+            self._view.set_game_state(game_state)
 

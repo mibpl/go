@@ -10,25 +10,28 @@ class BoardView(gtk.DrawingArea):
         self.add_events(gtk.gdk.BUTTON_PRESS_MASK)
         self.connect("expose-event", self.expose)
         self.connect("button-press-event", self.mousePress)
-        self._board = None
+        self._game_state = None
         self._controller = None
-
-    def set_board(self, board):
-        #TODO: add some mutex
-        self._board = board
-        self.queue_draw()
 
     def set_controller(self, controller):
         self._controller = controller
 
+    def set_game_state(self, game_state):
+        #TODO: add some mutex?
+        self._game_state = game_state
+        self.queue_draw()
+
+    def display_message(self, message):
+        pass
+
     def mousePress(self, widget, event):
-        if self._board is None:
+        if self._game_state is None:
             return
 
         width = self.allocation.width
         height = self.allocation.height
         size = min(width, height)
-        n = self._board.get_size()
+        n = self._game_state.board.get_size()
         column = int(math.floor(event.x / size * n))
         row = int(math.floor(event.y / size * n))
 
@@ -37,7 +40,7 @@ class BoardView(gtk.DrawingArea):
             self._controller.click(row, column)
 
     def expose(self, widget, event):
-        if self._board is None:
+        if self._game_state is None:
             return
 
         cr = widget.window.cairo_create()
@@ -53,7 +56,8 @@ class BoardView(gtk.DrawingArea):
 
         cr.set_source_rgb(0.1, 0.1, 0.1)
 
-        n = self._board.get_size()
+        board = self._game_state.board
+        n = board.get_size()
         for i in range(n):
             x = ((2 * i + 1) * size) / (2 * n)
             cr.move_to(0, x)
@@ -66,7 +70,7 @@ class BoardView(gtk.DrawingArea):
         r = 0.5 * size / n
         for row in range(n):
             for column in range(n):
-                token = self._board.get_token(row, column)
+                token = board.get_token(row, column)
                 if not token == 'empty':
                     if token == 'black':
                         cr.set_source_rgb(0.0, 0.0, 0.0)
