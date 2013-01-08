@@ -26,7 +26,6 @@ class MainWindow(gtk.Window):
         view.set_controller(controller)
         controller.set_view(view)
 
-        self.add(view)
         self.show_all()
 
 
