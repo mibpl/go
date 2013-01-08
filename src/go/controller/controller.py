@@ -1,4 +1,4 @@
-from .model.moves import PlaceStoneMove
+from ..model.moves import PlaceStoneMove
 
 class Controller(object):
     def __init__(self, game_history):

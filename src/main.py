@@ -4,10 +4,10 @@
 import gtk
 import cairo
 
-from controller.controller import Controller
-from model.board_model import BoardModel
-from view.board_view import BoardView
-from model.game_history import GameHistory
+from go.controller.controller import Controller
+from go.model.board_model import BoardModel
+from go.view.board_view import BoardView
+from go.model.game_history import GameHistory
 
 class MainWindow(gtk.Window):
 
