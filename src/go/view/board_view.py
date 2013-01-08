@@ -12,19 +12,23 @@ class BoardView():
         main_hbox = gtk.HBox(False)
         right_panel = gtk.VBox(True)
         
-        b1 = gtk.Button("menu")
-        b2 = gtk.Button("b2")
-        b4 = gtk.Button("b4")
+        menu_button = gtk.Button("menu")
         
         pass_button = gtk.Button("pass")
         pass_button.add_events(gtk.gdk.BUTTON_PRESS_MASK)
         pass_button.connect("button-press-event", self._do_pass)
         
+        prev_button = gtk.Button("prev")
+        prev_button.add_events(gtk.gdk.BUTTON_PRESS_MASK)
+        prev_button.connect("button-press-event", self._navigate_prev)
         
-        b5 = gtk.Button("b5")
+        next_button = gtk.Button("next")
+        next_button.add_events(gtk.gdk.BUTTON_PRESS_MASK)
+        next_button.connect("button-press-event", self._navigate_next)
         
         right_panel.pack_start(pass_button, False)
-        right_panel.pack_start(b5, False)
+        right_panel.pack_start(prev_button, False)
+        right_panel.pack_start(next_button, False)
         
         self._image = gtk.DrawingArea()
         main_hbox.pack_start(self._image, True)
@@ -33,7 +37,7 @@ class BoardView():
         self._status_bar = gtk.Statusbar()
         self.display_message("Welcome to go")
         
-        main_vbox.pack_start(b1, False)
+        main_vbox.pack_start(menu_button, False)
         main_vbox.pack_start(main_hbox, True)
         main_vbox.pack_start(self._status_bar, False)
         
@@ -50,14 +54,20 @@ class BoardView():
     def set_game_state(self, game_state):
         #TODO: add some mutex?
         self._game_state = game_state
+	self.display_message("kill rate: black = %d and white = %d" % (game_state.captives_count["black"], game_state.captives_count["white"]))
         self._image.queue_draw()
 
     def display_message(self, message):
         self._status_bar.push(self._status_bar.get_context_id("info"), message)
     
     def _do_pass(self, widget, event):
-        print("pass")
         self._controller.do_pass()
+    
+    def _navigate_prev(self, widget, event):
+        self._controller.navigate_prev()
+    
+    def _navigate_next(self, widget, event):
+        self._controller.navigate_next()
     
     def _get_size(self):
         return min(self._image.allocation.width, self._image.allocation.height)
