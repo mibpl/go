@@ -84,8 +84,7 @@ class BoardView():
         
         if row < n and column < n:
             print row, column
-            if self._controller is not None:
-                self._controller.click(row, column)
+            self._controller.click(row, column)
 
     def expose(self, widget, event):
         if self._game_state is None:

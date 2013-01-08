@@ -4,7 +4,6 @@ class Controller(object):
     def __init__(self, game_history):
         self._history = game_history
         self._time = 0
-        self._current_time = 0
         self._view = None
 
     def set_view(self, view):
@@ -12,44 +11,55 @@ class Controller(object):
         self._update_view()
 
     def _is_current(self):
-        return self._current_time == self._time
+        return self._time == self._history.get_num_moves()
 
     def _is_start(self):
-        return self._current_time == 0
+        return self._time == 0
 
     def _execute_move(self, move):
+        if not self._is_current():
+            self._view.display_message(
+                "Go to the last state before making a new move.")
+            return
+        game_state = self._get_current_state()
+        if not move.validate(game_state):
+            self._view.display_message(
+                "This is not a valid move.")
+            return
         self._history.append_move(move)
         self._time += 1
         self._update_view()
 
     def click(self, row, column):
-        if not self._is_current():
-            return
-        state = self._get_current_state()
-        move = PlaceStoneMove(row, column)
-        self._execute_move(move)
+        assert self._view is not None
+        self._execute_move(PlaceStoneMove(row, column))
 
     def do_pass(self):
-        if not self._is_current():
-            return
-        move = PassMove()
-        self._execute_move(move)
+        assert self._view is not None
+        self._execute_move(PassMove())
 
     def navigate_prev(self):
+        assert self._view is not None
         if self._is_start():
+            self._view.display_message(
+                "Already in the first state. Cannot go back.")
             return
-        self._current_time -= 1
+        self._time -= 1
+        self._update_view()
 
     def navigate_next(self):
+        assert self._view is not None
         if self._is_current():
+            self._view.display_message(
+                "Already in the last state. Cannot go forward.")
             return
-        self._current_time += 1
+        self._time += 1
+        self._update_view()
 
     def _get_current_state(self):
         return self._history.get_state_after_move(self._time)
 
     def _update_view(self):
-        if self._view is not None:
-            game_state = self._get_current_state()
-            self._view.set_game_state(game_state)
+        game_state = self._get_current_state()
+        self._view.set_game_state(game_state)
 
