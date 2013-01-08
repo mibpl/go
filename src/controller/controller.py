@@ -12,6 +12,8 @@ class Controller(object):
         self._update_view()
 
     def click(self, row, column):
+        # TODO: do not make move if we are not at the end of the history.
+        # TODO: determine whose turn it is based on game_state.
         player = 'black' if self._time % 2 == 0 else 'white'  # dirty hack, fix
         move = PlaceStoneMove(row, column, player)
         # TODO: validate move
