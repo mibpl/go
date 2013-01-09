@@ -2,7 +2,7 @@
 import unittest
 from board_model import BoardModel
 from game_state import GameState
-from moves import PassMove, PlaceStoneMove
+from moves import ClaimDeadStoneMove, PassMove, PlaceStoneMove
 
 class TestPassMove(unittest.TestCase):
 
@@ -95,6 +95,35 @@ class TestPlaceStoneMove(unittest.TestCase):
         self.game_state.consecutive_passes = 1
         game_state = PlaceStoneMove(0, 2)(self.game_state)
         self.assertEqual(0, game_state.consecutive_passes)
+
+
+class TestClaimDeadStoneMove(unittest.TestCase):
+
+    def setUp(self):
+        self.board_string = (
+                "w e e\n"
+                "w b e\n"
+                "w w b")
+        self.board = BoardModel.from_string(self.board_string)
+        self.game_state = GameState()
+        self.game_state.board = self.board
+        self.game_state.stage = "dead stones removing"
+
+    def test_validate_wrong_stage(self):
+        self.game_state.stage = "stone placing"
+        self.assertFalse(ClaimDeadStoneMove(0, 0).validate(self.game_state))
+
+    def test_validate_empty_field(self):
+        self.assertFalse(ClaimDeadStoneMove(0, 1).validate(self.game_state))
+
+    def test_validate_ok(self):
+        move = ClaimDeadStoneMove(0, 0)
+        self.assertTrue(move.validate(self.game_state))
+        game_state = move(self.game_state)
+        self.assertEqual((
+                "e e e\n"
+                "e b e\n"
+                "e e b"), str(game_state.board))
 
 if __name__ == '__main__':
     unittest.main()

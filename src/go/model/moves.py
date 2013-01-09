@@ -9,6 +9,8 @@ def advance_turn(gs):
 def stone_placing_stage(gs):
     return gs.stage == 'stone placing'
 
+def dead_stones_removing_stage(gs):
+    return gs.stage == 'dead stones removing'
 
 class PlaceStoneMove(object):
 
@@ -76,14 +78,17 @@ class PassMove(object):
 
 class ClaimDeadStoneMove(object):
 
-    # TODO: implement methods below.
     def __init__(self, row, column):
         self._row = row
         self._column = column
 
     def __call__(self, gs):
-        pass
+        gs.board.remove_group(self._row, self._column)
+        return gs
 
     def validate(self, gs):
-        pass
+        row, column = self._row, self._column
+        return (dead_stones_removing_stage(gs)
+                and gs.board.on_board(row, column)
+                and gs.board.get_token(row, column) != 'empty')
 
