@@ -9,3 +9,4 @@ class GameState(object):
         self.stage = 'stone placing'  # or 'dead stones removing'
         self.consecutive_passes = 0
         self.captives_count = {'black': 0, 'white': 0}
+        self.ko = None

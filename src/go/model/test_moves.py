@@ -70,6 +70,25 @@ class TestPlaceStoneMove(unittest.TestCase):
                 "e b e\n"
                 "w w b"), str(game_state.board))
 
+    def test_ko(self):
+        board = BoardModel.from_string((
+                "e e e e\n"
+                "e b w e\n"
+                "b w e w\n"
+                "e b w e"))
+        self.game_state.board = board
+        game_state = self.game_state
+        move = PlaceStoneMove(2, 2)
+        self.assertTrue(move.validate(game_state))
+        game_state = move(game_state)
+        move = PlaceStoneMove(2, 1)
+        self.assertFalse(move.validate(game_state))
+        move = PlaceStoneMove(0, 1)
+        self.assertTrue(move.validate(game_state))
+        game_state = move(game_state)
+        move = PlaceStoneMove(2, 1)
+        self.assertTrue(move.validate(game_state))
+
 if __name__ == '__main__':
     unittest.main()
 

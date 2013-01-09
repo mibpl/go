@@ -30,10 +30,10 @@ class PlaceStoneMove(object):
         row, column = self._row, self._column
         if not (stone_placing_stage(gs)
                 and board.on_board(row, column)
-                and board.get_token(row, column) == 'empty'):
+                and board.get_token(row, column) == 'empty'
+                and gs.ko != (row, column)):
             return False
         self._place_stone(board, gs.active_player)
-        # TODO: implement KO rule
         for r, c in board.get_neighbours(row, column):
             tok = board.get_token(r, c)
             if  tok == "empty" or (tok == gs.second_player and board.is_dead(r, c)):
@@ -42,10 +42,21 @@ class PlaceStoneMove(object):
 
     def __call__(self, gs):
         board = gs.board
+        row, column = self._row, self._column
         self._place_stone(board, gs.active_player)
-        for r, c in board.get_neighbours(self._row, self._column):
+        captives_count = 0
+        captive = None
+        for r, c in board.get_neighbours(row, column):
             if board.get_token(r, c) == gs.second_player and board.is_dead(r, c):
-                board.remove_group(r, c)
+                captives_count += board.remove_group(r, c)
+                captive = (r, c)
+        gs.ko = None
+        if captives_count == 1:
+            new_board = deepcopy(board)
+            new_board.set_token(*captive, token=gs.second_player)
+            if (new_board.is_dead(row, column)
+                    and len(new_board.get_group(row, column)[0]) == 1):
+                gs.ko = captive
         gs.board = board
         return advance_turn(gs)
 
