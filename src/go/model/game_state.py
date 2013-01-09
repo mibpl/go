@@ -10,3 +10,5 @@ class GameState(object):
         self.consecutive_passes = 0
         self.captives_count = {'black': 0, 'white': 0}
         self.ko = None
+        self._move_count = 0
+        self.handicaps_placed = 0

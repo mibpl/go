@@ -3,6 +3,7 @@ from copy import deepcopy
 from game_state import GameState
 
 def advance_turn(gs):
+    gs._move_count += 1
     gs.active_player, gs.second_player = gs.second_player, gs.active_player
     return gs
 
@@ -67,6 +68,7 @@ class PlaceStoneMove(object):
 class PassMove(object):
 
     def __call__(self, gs):
+        gs._move_count += 1
         gs.consecutive_passes += 1
         if gs.consecutive_passes >= 2:
             gs.stage = 'dead stones removing'
@@ -92,3 +94,19 @@ class ClaimDeadStoneMove(object):
                 and gs.board.on_board(row, column)
                 and gs.board.get_token(row, column) != 'empty')
 
+class PlaceHandicapStoneMove(object):
+    
+    def __init__(self, row, column):
+        self._r = row
+        self._c = column
+
+    def validate(self, gs):
+        return gs.board.get_size() == 19 and gs._move_count == 0 and not gs.handicaps_placed < 9 \
+            and board.on_board(self._r, self._c) and board.get_token(self._r, self._c) == 'empty'
+  
+    def __call__(self, gs):
+        gs.board.set_token(self._r, self._c, 'black')
+        gs.handicaps_placed += 1
+        gs.active_player = 'white'
+        gs.second_player = 'black'
+        return gs

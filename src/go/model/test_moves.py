@@ -2,7 +2,7 @@
 import unittest
 from board_model import BoardModel
 from game_state import GameState
-from moves import ClaimDeadStoneMove, PassMove, PlaceStoneMove
+from moves import ClaimDeadStoneMove, PassMove, PlaceStoneMove, PlaceHandicapStoneMove
 
 class TestPassMove(unittest.TestCase):
 
@@ -29,6 +29,18 @@ class TestPassMove(unittest.TestCase):
     def test_validate_wrong(self):
         self.game_state.stage = 'dead stone removing'
         self.assertFalse(self.move.validate(self.game_state))
+
+
+class TestHandicapMove(unittest.TestCase):
+
+    def setUp(self):
+        self.game_state = GameState()
+        self.move = PlaceHandicapStoneMove(0, 0)
+
+    def test_call(self):
+        gs = self.move(self.game_state)
+        self.assertEqual('white', gs.active_player)
+        self.assertEqual('black', gs.board.get_token(0, 0))
 
 
 class TestPlaceStoneMove(unittest.TestCase):
