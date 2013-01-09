@@ -37,11 +37,17 @@ class TestHandicapMove(unittest.TestCase):
         self.game_state = GameState()
         self.move = PlaceHandicapStoneMove(0, 0)
 
-    def test_call(self):
+    def test_v(self):
         gs = self.move(self.game_state)
         self.assertEqual('white', gs.active_player)
         self.assertEqual('black', gs.board.get_token(0, 0))
 
+    def test_call(self):
+        self.assertTrue(self.move.validate(self.game_state))
+        gs = self.move(self.game_state)
+        self.assertEqual('white', gs.active_player)
+        self.assertEqual('black', gs.board.get_token(0, 0))
+        self.assertFalse(self.move.validate(gs))
 
 class TestPlaceStoneMove(unittest.TestCase):
 
