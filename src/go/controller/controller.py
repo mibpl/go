@@ -1,14 +1,19 @@
 from ..model.moves import PlaceStoneMove, PassMove
 
 class Controller(object):
-    def __init__(self, game_history):
+    def __init__(self, game_history, place_stone_move=PlaceStoneMove, pass_move=PassMove):
         self._history = game_history
         self._time = 0
         self._view = None
+        self._place_stone_move = place_stone_move
+        self._pass_move = pass_move
 
     def set_view(self, view):
         self._view = view
         self._update_view()
+
+    def get_time(self):
+        return self._time
 
     def _is_current(self):
         return self._time == self._history.get_num_moves()
@@ -32,11 +37,11 @@ class Controller(object):
 
     def click(self, row, column):
         assert self._view is not None
-        self._execute_move(PlaceStoneMove(row, column))
+        self._execute_move(self._place_stone_move(row, column))
 
     def do_pass(self):
         assert self._view is not None
-        self._execute_move(PassMove())
+        self._execute_move(self._pass_move())
 
     def navigate_prev(self):
         assert self._view is not None
