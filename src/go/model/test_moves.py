@@ -37,7 +37,7 @@ class TestHandicapMove(unittest.TestCase):
         self.game_state = GameState()
         self.move = PlaceHandicapStoneMove(0, 0)
 
-    def test_v(self):
+    def test_validate(self):
         gs = self.move(self.game_state)
         self.assertEqual('white', gs.active_player)
         self.assertEqual('black', gs.board.get_token(0, 0))
@@ -113,6 +113,14 @@ class TestPlaceStoneMove(unittest.TestCase):
         self.game_state.consecutive_passes = 1
         game_state = PlaceStoneMove(0, 2)(self.game_state)
         self.assertEqual(0, game_state.consecutive_passes)
+
+    def test_remove_dead_stones(self):
+        game_state = PlaceStoneMove(1, 0)(self.game_state)
+        self.assertEqual(2, game_state.captives_count['black'])
+        self.assertEqual((
+                "w e e\n"
+                "b b e\n"
+                "e e b"), str(game_state.board))
 
 
 class TestClaimDeadStoneMove(unittest.TestCase):

@@ -53,6 +53,7 @@ class PlaceStoneMove(object):
             if board.get_token(r, c) == gs.second_player and board.is_dead(r, c):
                 captives_count += board.remove_group(r, c)
                 captive = (r, c)
+        gs.captives_count[gs.active_player] += captives_count
         gs.ko = None
         if captives_count == 1:
             new_board = deepcopy(board)
@@ -95,7 +96,7 @@ class ClaimDeadStoneMove(object):
                 and gs.board.get_token(row, column) != 'empty')
 
 class PlaceHandicapStoneMove(object):
-    
+
     def __init__(self, row, column):
         self._r = row
         self._c = column
@@ -103,7 +104,7 @@ class PlaceHandicapStoneMove(object):
     def validate(self, gs):
         return gs.board.get_size() == 19 and gs._move_count == 0 and gs.handicaps_placed < 9 \
             and gs.board.on_board(self._r, self._c) and gs.board.get_token(self._r, self._c) == 'empty'
-  
+
     def __call__(self, gs):
         gs.board.set_token(self._r, self._c, 'black')
         gs.handicaps_placed += 1
