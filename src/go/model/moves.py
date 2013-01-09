@@ -101,8 +101,8 @@ class PlaceHandicapStoneMove(object):
         self._c = column
 
     def validate(self, gs):
-        return gs.board.get_size() == 19 and gs._move_count == 0 and not gs.handicaps_placed < 9 \
-            and board.on_board(self._r, self._c) and board.get_token(self._r, self._c) == 'empty'
+        return gs.board.get_size() == 19 and gs._move_count == 0 and gs.handicaps_placed < 9 \
+            and gs.board.on_board(self._r, self._c) and gs.board.get_token(self._r, self._c) == 'empty'
   
     def __call__(self, gs):
         gs.board.set_token(self._r, self._c, 'black')
