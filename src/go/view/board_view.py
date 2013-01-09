@@ -2,6 +2,7 @@ import gtk
 import gtk.gdk
 import cairo
 import math
+from player_view import PlayerView
 
 class BoardView():
 
@@ -25,10 +26,15 @@ class BoardView():
         next_button = gtk.Button("next")
         next_button.add_events(gtk.gdk.BUTTON_RELEASE_MASK)
         next_button.connect("button-release-event", self._navigate_next)
+
+        players_panel = gtk.HBox(True, 20)
+        self._player1 = PlayerView(players_panel, "white")
+        self._player2 = PlayerView(players_panel, "black")
         
         right_panel.pack_start(pass_button, False)
         right_panel.pack_start(prev_button, False)
         right_panel.pack_start(next_button, False)
+        right_panel.pack_start(players_panel, False)
         
         self._image = gtk.DrawingArea()
         main_hbox.pack_start(self._image, True)
@@ -54,7 +60,8 @@ class BoardView():
     def set_game_state(self, game_state):
         #TODO: add some mutex?
         self._game_state = game_state
-	self.display_message("kill rate: black = %d and white = %d" % (game_state.captives_count["black"], game_state.captives_count["white"]))
+        self._player1.set_game_state(game_state)
+        self._player2.set_game_state(game_state)
         self._image.queue_draw()
 
     def display_message(self, message):
