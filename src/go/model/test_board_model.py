@@ -86,6 +86,12 @@ class TestBoardModel(unittest.TestCase):
         self.assertFalse(board.is_dead(0, 3))
         self.assertTrue(board.is_dead(4, 4))
         self.assertFalse(board.is_dead(3, 0))
+        board_string = (
+                "e e e\n"
+                "e b e\n"
+                "e e e")
+        board = BoardModel.from_string(board_string)
+        self.assertFalse(board.is_dead(1, 1))
 
     def test_remove_group(self):
         board_string = (

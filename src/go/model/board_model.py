@@ -81,7 +81,7 @@ class BoardModel(object):
         if token == "empty":
             return False
         _, neighbours = self.get_group(row, column)
-        return len(neighbours) == 1
+        return len(neighbours) == 1 and "empty" not in neighbours
 
     def remove_group(self, row, column):
         """Removes group of stones to which stone at (row, column) belongs.
