@@ -14,6 +14,8 @@ class TestPassMove(unittest.TestCase):
         gs = self.move(self.game_state)
         self.assertEqual('white', gs.active_player)
         self.assertEqual(self.game_state.board, gs.board)
+        gs = self.move(gs)
+        self.assertEqual('dead stones removing', gs.stage)
 
     def test_validate(self):
         gs = self.game_state
@@ -88,6 +90,11 @@ class TestPlaceStoneMove(unittest.TestCase):
         game_state = move(game_state)
         move = PlaceStoneMove(2, 1)
         self.assertTrue(move.validate(game_state))
+
+    def test_clear_consecutive_passes_count(self):
+        self.game_state.consecutive_passes = 1
+        game_state = PlaceStoneMove(0, 2)(self.game_state)
+        self.assertEqual(0, game_state.consecutive_passes)
 
 if __name__ == '__main__':
     unittest.main()

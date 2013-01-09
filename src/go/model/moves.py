@@ -58,6 +58,7 @@ class PlaceStoneMove(object):
                     and len(new_board.get_group(row, column)[0]) == 1):
                 gs.ko = captive
         gs.board = board
+        gs.consecutive_passes = 0
         return advance_turn(gs)
 
 
@@ -65,6 +66,8 @@ class PassMove(object):
 
     def __call__(self, gs):
         gs.consecutive_passes += 1
+        if gs.consecutive_passes >= 2:
+            gs.stage = 'dead stones removing'
         return advance_turn(gs)
 
     def validate(self, gs):
