@@ -19,12 +19,12 @@ class BoardView():
         pass_button.connect("button-press-event", self._do_pass)
         
         prev_button = gtk.Button("prev")
-        prev_button.add_events(gtk.gdk.BUTTON_PRESS_MASK)
-        prev_button.connect("button-press-event", self._navigate_prev)
+        prev_button.add_events(gtk.gdk.BUTTON_RELEASE_MASK)
+        prev_button.connect("button-release-event", self._navigate_prev)
         
         next_button = gtk.Button("next")
-        next_button.add_events(gtk.gdk.BUTTON_PRESS_MASK)
-        next_button.connect("button-press-event", self._navigate_next)
+        next_button.add_events(gtk.gdk.BUTTON_RELEASE_MASK)
+        next_button.connect("button-release-event", self._navigate_next)
         
         right_panel.pack_start(pass_button, False)
         right_panel.pack_start(prev_button, False)
