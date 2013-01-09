@@ -27,7 +27,7 @@ class TestPassMove(unittest.TestCase):
         self.assertFalse(move.validate(gs))
 
     def test_validate_wrong(self):
-        self.game_state.stage = 'dead stone removing'
+        self.game_state.stage = 'dead stones removing'
         self.assertFalse(self.move.validate(self.game_state))
 
 
@@ -68,7 +68,7 @@ class TestPlaceStoneMove(unittest.TestCase):
         self.assertTrue(PlaceStoneMove(0, 1).validate(self.game_state))
 
     def test_validate_wrong_stage(self):
-        self.game_state.stage = 'dead stone removing'
+        self.game_state.stage = 'dead stones removing'
         self.assertFalse(PlaceStoneMove(0, 1).validate(self.game_state))
 
     def test_validate_dead_stone(self):
