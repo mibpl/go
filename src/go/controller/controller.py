@@ -1,12 +1,13 @@
-from ..model.moves import PlaceStoneMove, PassMove
+from ..model.moves import PlaceStoneMove, PassMove, ClaimDeadStoneMove
 
 class Controller(object):
-    def __init__(self, game_history, place_stone_move=PlaceStoneMove, pass_move=PassMove):
+    def __init__(self, game_history, place_stone_move=PlaceStoneMove, pass_move=PassMove, claim_dead_stone_move=ClaimDeadStoneMove):
         self._history = game_history
         self._time = 0
         self._view = None
         self._place_stone_move = place_stone_move
         self._pass_move = pass_move
+        self._claim_dead_stone_move = claim_dead_stone_move
 
     def set_view(self, view):
         self._view = view
@@ -37,7 +38,11 @@ class Controller(object):
 
     def click(self, row, column):
         assert self._view is not None
-        self._execute_move(self._place_stone_move(row, column))
+        game_state = self._get_current_state()
+        if game_state.stage == 'stone placing':
+            self._execute_move(self._place_stone_move(row, column))
+        else:
+            self._execute_move(self._claim_dead_stone_move(row, column))
 
     def do_pass(self):
         assert self._view is not None
