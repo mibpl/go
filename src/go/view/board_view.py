@@ -13,7 +13,7 @@ class BoardView():
         main_hbox = gtk.HBox(False)
         right_panel = gtk.VBox(True)
         
-        menu_button = gtk.Button("menu")
+        # menu_button = gtk.Button("menu")
 
         handicaps_done_button = gtk.Button("handicaps done")
         handicaps_done_button.connect("clicked", self._do_handicaps_done)
@@ -48,7 +48,7 @@ class BoardView():
         self._status_bar = gtk.Statusbar()
         self.display_message("Welcome to go")
         
-        main_vbox.pack_start(menu_button, False)
+        # main_vbox.pack_start(menu_button, False)
         main_vbox.pack_start(main_hbox, True)
         main_vbox.pack_start(self._status_bar, False)
         
