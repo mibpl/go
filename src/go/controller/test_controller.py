@@ -23,7 +23,7 @@ def mock_move(*args, **kwargs):
     move.validate = mock.MagicMock(return_value=True)
     return move
 
-class TestBoardModel(unittest.TestCase):
+class TestController(unittest.TestCase):
 
     def test_click(self):
         mock_state = mock.Mock()
