@@ -1,4 +1,5 @@
 from ..model.moves import PlaceStoneMove, PassMove, ClaimDeadStoneMove
+from ..model.score_game import AreaScoring
 
 class Controller(object):
     def __init__(self, game_history, place_stone_move=PlaceStoneMove, pass_move=PassMove, claim_dead_stone_move=ClaimDeadStoneMove):
@@ -65,6 +66,20 @@ class Controller(object):
             return
         self._time += 1
         self._update_view()
+
+    def score(self):
+        assert self._view is not None
+        game_state = self._get_current_state()
+        score = AreaScoring().score(game_state)
+        black, white = score['black'], score['white']
+        if black > white:
+            result = "Black wins."
+        elif black == white:
+            result = "Draw."
+        else:  # black < white
+            result = "White wins."
+        self._view.display_message(
+                "Black: " + str(black) + ". White: " + str(white) + ". " + result)
 
     def _get_current_state(self):
         return self._history.get_state_after_move(self._time)

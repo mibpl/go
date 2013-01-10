@@ -24,6 +24,9 @@ class BoardView():
         next_button = gtk.Button("next")
         next_button.connect("clicked", self._navigate_next)
 
+        score_button = gtk.Button("score")
+        score_button.connect("clicked", self._score)
+
         players_panel = gtk.HBox(True, 20)
         self._player1 = PlayerView(players_panel, "white")
         self._player2 = PlayerView(players_panel, "black")
@@ -31,6 +34,7 @@ class BoardView():
         right_panel.pack_start(pass_button, False)
         right_panel.pack_start(prev_button, False)
         right_panel.pack_start(next_button, False)
+        right_panel.pack_start(score_button, False)
         right_panel.pack_start(players_panel, False)
         
         self._image = gtk.DrawingArea()
@@ -73,6 +77,9 @@ class BoardView():
     
     def _navigate_next(self, widget):
         self._controller.navigate_next()
+
+    def _score(self, widget):
+        self._controller.score()
     
     def _get_size(self):
         return min(self._image.allocation.width, self._image.allocation.height)
