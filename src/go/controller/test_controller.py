@@ -34,6 +34,7 @@ class TestController(unittest.TestCase):
 
         controller = Controller(game_history_mock, place_stone_move=lambda *args, **kwargs: move)
         controller.set_view(view_mock)
+        controller.do_handicaps_done()
         controller.click(4, 4)
 
         self.assertEqual(1, controller.get_time())
@@ -50,6 +51,7 @@ class TestController(unittest.TestCase):
 
         controller = Controller(game_history_mock, pass_move=lambda *args, **kwargs: move)
         controller.set_view(view_mock)
+        controller.do_handicaps_done()
         controller.do_pass()
 
         self.assertEqual(1, controller.get_time())
