@@ -62,6 +62,7 @@ class BoardView():
         self._game_state = game_state
         self._player1.set_game_state(game_state)
         self._player2.set_game_state(game_state)
+        self.display_message("Valid move")
         self._image.queue_draw()
 
     def display_message(self, message):
@@ -90,7 +91,6 @@ class BoardView():
         row = int(math.floor(event.y / size * n))
         
         if row < n and column < n:
-            print row, column
             self._controller.click(row, column)
 
     def expose(self, widget, event):
