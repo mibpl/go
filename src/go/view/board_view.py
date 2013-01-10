@@ -16,16 +16,13 @@ class BoardView():
         menu_button = gtk.Button("menu")
         
         pass_button = gtk.Button("pass")
-        pass_button.add_events(gtk.gdk.BUTTON_PRESS_MASK)
-        pass_button.connect("button-press-event", self._do_pass)
+        pass_button.connect("clicked", self._do_pass)
         
         prev_button = gtk.Button("prev")
-        prev_button.add_events(gtk.gdk.BUTTON_RELEASE_MASK)
-        prev_button.connect("button-release-event", self._navigate_prev)
+        prev_button.connect("clicked", self._navigate_prev)
         
         next_button = gtk.Button("next")
-        next_button.add_events(gtk.gdk.BUTTON_RELEASE_MASK)
-        next_button.connect("button-release-event", self._navigate_next)
+        next_button.connect("clicked", self._navigate_next)
 
         players_panel = gtk.HBox(True, 20)
         self._player1 = PlayerView(players_panel, "white")
@@ -68,13 +65,13 @@ class BoardView():
     def display_message(self, message):
         self._status_bar.push(self._status_bar.get_context_id("info"), message)
     
-    def _do_pass(self, widget, event):
+    def _do_pass(self, widget):
         self._controller.do_pass()
     
-    def _navigate_prev(self, widget, event):
+    def _navigate_prev(self, widget):
         self._controller.navigate_prev()
     
-    def _navigate_next(self, widget, event):
+    def _navigate_next(self, widget):
         self._controller.navigate_next()
     
     def _get_size(self):
