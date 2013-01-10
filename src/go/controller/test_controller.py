@@ -27,6 +27,7 @@ class TestController(unittest.TestCase):
 
     def test_click(self):
         mock_state = mock.Mock()
+        mock_state.stage = 'stone placing'
         game_history_mock = mock.Mock(wraps=MockHistory(mock_state))
         view_mock = mock.Mock()
         move = mock_move()
