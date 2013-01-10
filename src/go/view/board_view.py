@@ -14,6 +14,9 @@ class BoardView():
         right_panel = gtk.VBox(True)
         
         menu_button = gtk.Button("menu")
+
+        handicaps_done_button = gtk.Button("handicaps done")
+        handicaps_done_button.connect("clicked", self._do_handicaps_done)
         
         pass_button = gtk.Button("pass")
         pass_button.connect("clicked", self._do_pass)
@@ -31,6 +34,7 @@ class BoardView():
         self._player1 = PlayerView(players_panel, "white")
         self._player2 = PlayerView(players_panel, "black")
         
+        right_panel.pack_start(handicaps_done_button, False)
         right_panel.pack_start(pass_button, False)
         right_panel.pack_start(prev_button, False)
         right_panel.pack_start(next_button, False)
@@ -71,6 +75,9 @@ class BoardView():
     
     def _do_pass(self, widget):
         self._controller.do_pass()
+    
+    def _do_handicaps_done(self, widget):
+        self._controller.do_handicaps_done()
     
     def _navigate_prev(self, widget):
         self._controller.navigate_prev()

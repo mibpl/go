@@ -1,14 +1,16 @@
-from ..model.moves import PlaceStoneMove, PassMove, ClaimDeadStoneMove
+from ..model.moves import PlaceStoneMove, PassMove, ClaimDeadStoneMove, PlaceHandicapStoneMove
 from ..model.score_game import AreaScoring
 
 class Controller(object):
-    def __init__(self, game_history, place_stone_move=PlaceStoneMove, pass_move=PassMove, claim_dead_stone_move=ClaimDeadStoneMove):
+    def __init__(self, game_history, place_stone_move=PlaceStoneMove, pass_move=PassMove, claim_dead_stone_move=ClaimDeadStoneMove, handicap_move=PlaceHandicapStoneMove):
         self._history = game_history
         self._time = 0
         self._view = None
         self._place_stone_move = place_stone_move
         self._pass_move = pass_move
         self._claim_dead_stone_move = claim_dead_stone_move
+        self._handicap_move = handicap_move
+        self.sethandicaps = True
 
     def set_view(self, view):
         self._view = view
@@ -40,7 +42,9 @@ class Controller(object):
     def click(self, row, column):
         assert self._view is not None
         game_state = self._get_current_state()
-        if game_state.stage == 'stone placing':
+        if self.sethandicaps:
+            self._execute_move(self._handicap_move(row, column))
+        elif game_state.stage == 'stone placing':
             self._execute_move(self._place_stone_move(row, column))
         else:
             self._execute_move(self._claim_dead_stone_move(row, column))
@@ -48,6 +52,10 @@ class Controller(object):
     def do_pass(self):
         assert self._view is not None
         self._execute_move(self._pass_move())
+
+    def do_handicaps_done(self):
+        assert self._view is not None
+        self.sethandicaps = False
 
     def navigate_prev(self):
         assert self._view is not None
